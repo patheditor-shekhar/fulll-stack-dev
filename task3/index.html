@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Contact Manager</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+	<style>
+		:root {
+			--bg: #f8f9ff;
+			--card: #ffffff;
+			--text: #1f2937;
+			--muted: #6b7280;
+			--primary: #4361ee;
+			--primary-dark: #3347c8;
+			--accent: #4cc9f0;
+			--border: #dbe2f0;
+			--shadow: 0 10px 30px rgba(67, 97, 238, 0.12);
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			font-family: 'Poppins', sans-serif;
+			background: linear-gradient(120deg, #eef2ff, #f8fbff);
+			color: var(--text);
+			min-height: 100vh;
+		}
+
+		.site-header {
+			background: var(--card);
+			border-bottom: 1px solid var(--border);
+			position: sticky;
+			top: 0;
+			z-index: 20;
+		}
+
+		.nav {
+			width: min(1100px, 92%);
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 14px 0;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-weight: 700;
+			color: var(--primary);
+			text-decoration: none;
+		}
+
+		.nav-links {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+		}
+
+		.nav-links a {
+			text-decoration: none;
+			color: var(--text);
+			font-weight: 500;
+			padding: 9px 14px;
+			border-radius: 10px;
+			border: 1px solid transparent;
+			transition: 0.2s ease;
+		}
+
+		.nav-links a.active,
+		.nav-links a:hover {
+			color: var(--primary);
+			border-color: #c7d2fe;
+			background: #eef2ff;
+		}
+
+		.container {
+			width: min(1100px, 92%);
+			margin: 28px auto 40px;
+		}
+
+		.page {
+			display: none;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 16px;
+			box-shadow: var(--shadow);
+			padding: clamp(18px, 3vw, 30px);
+		}
+
+		.page.active { display: block; }
+
+		.title {
+			margin-top: 0;
+			margin-bottom: 10px;
+			font-size: clamp(1.3rem, 2.3vw, 1.9rem);
+		}
+
+		.subtitle {
+			margin: 0 0 20px;
+			color: var(--muted);
+			line-height: 1.7;
+		}
+
+		.hero {
+			display: grid;
+			grid-template-columns: 1.1fr 0.9fr;
+			gap: 18px;
+			align-items: stretch;
+		}
+
+		.hero-card {
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			padding: 18px;
+			background: linear-gradient(140deg, #ffffff, #f7f9ff);
+		}
+
+		.hero ul {
+			margin: 0;
+			padding-left: 18px;
+			color: var(--muted);
+			line-height: 1.8;
+		}
+
+		form {
+			display: grid;
+			gap: 14px;
+			max-width: 700px;
+		}
+
+		label {
+			font-weight: 500;
+			font-size: 0.96rem;
+		}
+
+		input,
+		textarea {
+			width: 100%;
+			margin-top: 6px;
+			border: 1px solid #cfd8ea;
+			border-radius: 10px;
+			padding: 11px 12px;
+			font: inherit;
+			color: var(--text);
+			background: #fff;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		input:focus,
+		textarea:focus {
+			border-color: var(--accent);
+			box-shadow: 0 0 0 4px rgba(76, 201, 240, 0.16);
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 140px;
+		}
+
+		button {
+			width: fit-content;
+			border: 0;
+			border-radius: 10px;
+			background: var(--primary);
+			color: #fff;
+			font: inherit;
+			font-weight: 600;
+			padding: 11px 16px;
+			cursor: pointer;
+			transition: 0.2s ease;
+		}
+
+		button:hover { background: var(--primary-dark); }
+
+		.submissions-wrap {
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			padding: 10px;
+			background: #fcfdff;
+		}
+
+		#submissionsList {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: grid;
+			gap: 10px;
+		}
+
+		#submissionsList li {
+			border: 1px solid var(--border);
+			border-radius: 10px;
+			padding: 12px;
+			background: #fff;
+			line-height: 1.6;
+			word-break: break-word;
+		}
+
+		.empty {
+			color: var(--muted);
+			margin: 8px 2px;
+		}
+
+		@media (max-width: 860px) {
+			.hero {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header class="site-header">
+		<nav class="nav">
+			<a class="brand" href="#home"><i class="fa-solid fa-envelope-circle-check"></i> Contact Manager</a>
+			<div class="nav-links">
+				<a href="#home" data-page-link="home" class="active"><i class="fa-solid fa-house"></i> Home</a>
+				<a href="#contact" data-page-link="contact"><i class="fa-solid fa-address-card"></i> Contact</a>
+				<a href="#submissions" data-page-link="submissions"><i class="fa-solid fa-list"></i> Submissions</a>
+			</div>
+		</nav>
+	</header>
+
+	<main class="container">
+		<section id="home" class="page active">
+			<h1 class="title">Multi-Page Contact Website</h1>
+			<p class="subtitle">Use the navigation to move between Home, Contact Form, and Submissions pages. Data is saved in LocalStorage under the key <b>contacts</b>.</p>
+			<div class="hero">
+				<article class="hero-card">
+					<h3><i class="fa-solid fa-pen-to-square"></i> Contact Page</h3>
+					<ul>
+						<li>Name, Email, and Message fields</li>
+						<li>Client-side validation with alerts</li>
+						<li>Valid submissions are stored locally</li>
+					</ul>
+				</article>
+				<article class="hero-card">
+					<h3><i class="fa-solid fa-database"></i> Submissions Page</h3>
+					<ul>
+						<li>Reads all saved entries from LocalStorage</li>
+						<li>Displays each item as Name - Email - Message</li>
+						<li>Data persists on refresh</li>
+					</ul>
+				</article>
+			</div>
+		</section>
+
+		<section id="contact" class="page">
+			<h2 class="title">Contact Form</h2>
+			<p class="subtitle">Fill all fields before submitting.</p>
+			<form id="contactForm" novalidate>
+				<label for="name">Name
+					<input type="text" id="name" name="name" placeholder="Enter your name" />
+				</label>
+				<label for="email">Email
+					<input type="email" id="email" name="email" placeholder="Enter your email" />
+				</label>
+				<label for="message">Message
+					<textarea id="message" name="message" placeholder="Write your message"></textarea>
+				</label>
+				<button type="submit"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+			</form>
+		</section>
+
+		<section id="submissions" class="page">
+			<h2 class="title">Saved Submissions</h2>
+			<p class="subtitle">All entries are loaded from LocalStorage.</p>
+			<div class="submissions-wrap">
+				<p class="empty" id="emptyState">No submissions yet.</p>
+				<ul id="submissionsList"></ul>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const form = document.getElementById('contactForm');
+		const nameInput = document.getElementById('name');
+		const emailInput = document.getElementById('email');
+		const messageInput = document.getElementById('message');
+		const submissionsList = document.getElementById('submissionsList');
+		const emptyState = document.getElementById('emptyState');
+		const pages = document.querySelectorAll('.page');
+		const navLinks = document.querySelectorAll('[data-page-link]');
+
+		function getContacts() {
+			const saved = localStorage.getItem('contacts');
+			return saved ? JSON.parse(saved) : [];
+		}
+
+		function renderSubmissions() {
+			const contacts = getContacts();
+			submissionsList.innerHTML = '';
+
+			if (!contacts.length) {
+				emptyState.style.display = 'block';
+				return;
+			}
+
+			emptyState.style.display = 'none';
+			contacts.forEach((contact) => {
+				const li = document.createElement('li');
+				li.textContent = `${contact.name} - ${contact.email} - ${contact.message}`;
+				submissionsList.appendChild(li);
+			});
+		}
+
+		function isValidEmail(email) {
+			return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+		}
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			const name = nameInput.value.trim();
+			const email = emailInput.value.trim();
+			const message = messageInput.value.trim();
+
+			if (!name || !email || !message) {
+				alert('Validation failed: no field can be empty.');
+				return;
+			}
+
+			if (!isValidEmail(email)) {
+				alert('Validation failed: please enter a valid email address.');
+				return;
+			}
+
+			const contacts = getContacts();
+			contacts.push({ name, email, message });
+			localStorage.setItem('contacts', JSON.stringify(contacts));
+
+			alert('Submission saved successfully.');
+			form.reset();
+			renderSubmissions();
+			location.hash = '#submissions';
+		});
+
+		function showPage(pageId) {
+			const id = pageId || 'home';
+			pages.forEach((page) => page.classList.toggle('active', page.id === id));
+			navLinks.forEach((link) => link.classList.toggle('active', link.dataset.pageLink === id));
+			if (id === 'submissions') renderSubmissions();
+		}
+
+		function syncRoute() {
+			const pageId = (location.hash || '#home').replace('#', '');
+			const valid = ['home', 'contact', 'submissions'];
+			showPage(valid.includes(pageId) ? pageId : 'home');
+		}
+
+		window.addEventListener('hashchange', syncRoute);
+		syncRoute();
+	</script>
+</body>
+</html>
