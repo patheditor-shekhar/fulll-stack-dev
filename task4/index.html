@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape bg-shape--one" aria-hidden="true"></div>
+  <div class="bg-shape bg-shape--two" aria-hidden="true"></div>
+
+  <main class="dashboard" aria-label="Task Manager Dashboard">
+    <header class="dashboard__header">
+      <p class="eyebrow">Productivity Workspace</p>
+      <h1>Task Manager Dashboard</h1>
+      <p class="subtitle">Track, complete, and organize your tasks in one place.</p>
+    </header>
+
+    <section class="panel panel--input" aria-label="Add Task Section">
+      <h2>Add New Task</h2>
+      <form id="task-form" class="task-form" autocomplete="off">
+        <label for="task-input" class="sr-only">Task Name</label>
+        <input
+          id="task-input"
+          type="text"
+          placeholder="Enter a task..."
+          maxlength="120"
+          required
+        />
+        <button type="submit" id="add-task-btn">Add Task</button>
+      </form>
+    </section>
+
+    <section class="panel panel--controls" aria-label="Search and Filter Section">
+      <h2>Search & Filter</h2>
+      <div class="controls-grid">
+        <div class="control-item">
+          <label for="search-input">Search Tasks</label>
+          <input id="search-input" type="text" placeholder="Search by task name..." />
+        </div>
+        <div class="control-item">
+          <label for="filter-select">Filter</label>
+          <select id="filter-select">
+            <option value="all">Show All</option>
+            <option value="completed">Completed Only</option>
+            <option value="pending">Pending Only</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--list" aria-label="Task List Section">
+      <div class="list-top">
+        <h2>Your Tasks</h2>
+        <p id="task-count" aria-live="polite">0 tasks</p>
+      </div>
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+      <p id="empty-state" class="empty-state">No matching tasks. Add one to get started.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
