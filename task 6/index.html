@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHEKHAR COMMERCE | Task 6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <div class="logo">SHEKHAR <span>COMMERCE</span></div>
+            <div class="header-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search for products, brands and more">
+            </div>
+            <button class="login-btn" type="button">Login</button>
+            <div class="cart-icon" id="cartIcon">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cartCount">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="top-tools">
+        <div class="container" id="quickCategories">
+            <button class="quick-chip active" data-category="all" type="button">All</button>
+            <button class="quick-chip" data-category="Electronics" type="button">Electronics</button>
+            <button class="quick-chip" data-category="Fashion" type="button">Fashion</button>
+            <button class="quick-chip" data-category="Grocery" type="button">Grocery</button>
+            <button class="quick-chip" data-category="Top Offers" type="button">Top Offers</button>
+        </div>
+    </section>
+
+    <main class="container">
+        <h1 class="page-title">Product Catalog</h1>
+
+        <section class="catalog-layout">
+            <aside class="filters">
+                <div class="filter-head">
+                    <h2 class="filter-title">Filters</h2>
+                    <button id="clearFilters" class="clear-btn" type="button">CLEAR ALL</button>
+                </div>
+
+                <div class="filter-group">
+                    <h3>PRICE</h3>
+                    <input class="price-range" id="priceRange" type="range" min="500" max="15000" step="500" value="15000">
+                    <p class="price-label">Up to Rs <span id="priceValue">15000</span></p>
+                </div>
+
+                <div class="filter-group">
+                    <h3>RATING</h3>
+                    <label class="check-row"><input type="checkbox" name="rating" value="4"> 4 star and above</label>
+                    <label class="check-row"><input type="checkbox" name="rating" value="3"> 3 star and above</label>
+                </div>
+
+                <div class="filter-group">
+                    <h3>BRAND</h3>
+                    <label class="check-row"><input type="checkbox" name="brand" value="Nova"> Nova</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="Stride"> Stride</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="PureFarm"> PureFarm</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="MobiTech"> MobiTech</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="Denwer"> Denwer</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="Leafy"> Leafy</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="GameX"> GameX</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="UrbanCot"> UrbanCot</label>
+                    <label class="check-row"><input type="checkbox" name="brand" value="BoomBox"> BoomBox</label>
+                </div>
+            </aside>
+
+            <div class="products-area">
+                <section class="admin-panel">
+                    <h2>Add New Product</h2>
+                    <form id="productForm" class="admin-form">
+                        <div class="form-grid">
+                            <div class="field-group">
+                                <label for="productTitle">Title</label>
+                                <input id="productTitle" name="title" type="text" placeholder="Product title" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="productPrice">Price</label>
+                                <input id="productPrice" name="price" type="number" min="1" step="1" placeholder="499" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="productCategory">Category</label>
+                                <select id="productCategory" name="category" required>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Grocery">Grocery</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label for="productBrand">Brand</label>
+                                <select id="productBrand" name="brand" required>
+                                    <option value="Nova">Nova</option>
+                                    <option value="Stride">Stride</option>
+                                    <option value="PureFarm">PureFarm</option>
+                                    <option value="MobiTech">MobiTech</option>
+                                    <option value="Denwer">Denwer</option>
+                                    <option value="Leafy">Leafy</option>
+                                    <option value="GameX">GameX</option>
+                                    <option value="UrbanCot">UrbanCot</option>
+                                    <option value="BoomBox">BoomBox</option>
+                                </select>
+                            </div>
+                            <div class="field-group full">
+                                <label for="productImage">Image URL</label>
+                                <input id="productImage" name="image" type="url" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div class="field-group full">
+                                <label for="productDescription">Description</label>
+                                <textarea id="productDescription" name="description" placeholder="Short product description" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button id="productFormSubmit" class="submit-btn" type="submit">Add Product</button>
+                        </div>
+                    </form>
+                </section>
+
+                <div id="apiStatus" class="api-status" role="status" aria-live="polite"></div>
+                <div id="loadingState" class="loading-state">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <p>Loading products from the API...</p>
+                </div>
+
+                <section class="controls">
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Grocery">Grocery</option>
+                    </select>
+
+                    <select id="sortSelect">
+                        <option value="default">Sort By</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="alpha">Alphabetical (A-Z)</option>
+                    </select>
+                </section>
+
+                <section class="product-grid" id="productGrid">
+                </section>
+
+                <div class="pagination" id="paginationControls">
+                    <button id="prevPage">Prev</button>
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <button id="nextPage">Next</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button id="closeCart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            </div>
+        <div class="cart-footer">
+            <h3>Total: ₹<span id="cartTotal">0</span></h3>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </aside>
+
+    <script src="api.js"></script>
+    <script src="main.js" defer></script>
+</body>
+</html>
